@@ -1,21 +1,30 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import Posts from "./routes/Posts.js";
+import Product from "./routes/Product.js";
 import mongoose from "mongoose";
-
+import dotenv from "dotenv";
+dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json({ limit: "30mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "30mb" }));
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3001"],
+    credentials: true,
+  })
+);
 
-app.use("/Posts", Posts);
+app.use("/Product", Product);
 
 const URI = "mongodb://127.0.0.1:27017/laptop";
 mongoose
-  .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.MONGODB_CONNECT, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("Connected to DataBase");
     app.listen(PORT, () => {
