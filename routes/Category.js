@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.post("/addCategory", createCategory);
 router.get("/getList", getCategory);
-router.get("/:id", getIdCategory);
+router.get("/getId/:id", getIdCategory);
 router.delete("/:nameCategory", removeCategory);
 router.put("/:id", updateCategory);
 

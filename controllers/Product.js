@@ -1,14 +1,6 @@
 import { ProductModel } from "../models/product.js";
 //POST//
-export const createProduct = async (req, res) => {
-  try {
-    const data = req.body;
-    const post = new ProductModel(newPost);
-    await post.save();
-  } catch (error) {
-    res.status(500).json({ error: err });
-  }
-};
+export const createProduct = async (req, res) => {};
 //GET//
 export const getProducts = async (req, res) => {
   try {
