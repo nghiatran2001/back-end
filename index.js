@@ -20,8 +20,8 @@ app.use(
     origin: "http://localhost:3001",
   })
 );
-app.use("/api/user", authRoute);
-app.use("/api/category", categoryRoute);
+app.use("/user", authRoute);
+app.use("/category", categoryRoute);
 
 app.use(notFound);
 app.use(errorHandler);
