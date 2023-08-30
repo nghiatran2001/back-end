@@ -36,7 +36,7 @@ const generateAccessToken = (user) => {
       role: user.role,
     },
     process.env.ACCESS_KEY,
-    { expiresIn: "30d" }
+    { expiresIn: "1d" }
   );
 };
 

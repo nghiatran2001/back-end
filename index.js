@@ -9,6 +9,7 @@ const cors = require("cors");
 const PORT = process.env.PORT || 5000;
 const authRoute = require("./routes/auth.js");
 const userRoute = require("./routes/user.js");
+const categoryRoute = require("./routes/category.js");
 
 dbConnect();
 
@@ -24,6 +25,7 @@ app.use(
 
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
+app.use("/category", categoryRoute);
 
 app.listen(PORT, () => {
   console.log("Server is running in port: ", +PORT);
