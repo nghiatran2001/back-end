@@ -36,7 +36,7 @@ const generateAccessToken = (user) => {
       role: user.role,
     },
     process.env.ACCESS_KEY,
-    { expiresIn: "30d" }
+    { expiresIn: "180d" }
   );
 };
 
@@ -70,7 +70,7 @@ const login = async (req, res) => {
       const accessToken = generateAccessToken(user);
       const refreshToken = generateRefreshToken(user);
       arrayRefreshToken.push(refreshToken);
-      res.cookie("refresh", refreshToken, {
+      res.cookie("refreshtoken", refreshToken, {
         httpOnly: true,
         secure: false,
         path: "/",
@@ -87,7 +87,7 @@ const login = async (req, res) => {
 //Request Refresh Token
 const requestRefreshToken = async (req, res) => {
   //Take refreshToken from user
-  const refreshToken = req.cookies.refresh;
+  const refreshToken = req.cookies.refreshtoken;
   if (!refreshToken) {
     return res.status(401).json("You are not authenticated!!!");
   }
@@ -105,7 +105,7 @@ const requestRefreshToken = async (req, res) => {
     const newAccessToken = generateAccessToken(user);
     const newRefreshToken = generateRefreshToken(user);
     arrayRefreshToken.push(newRefreshToken);
-    res.cookie("refresh", newRefreshToken, {
+    res.cookie("refreshtoken", newRefreshToken, {
       httpOnly: true,
       secure: false,
       path: "/",
@@ -117,11 +117,11 @@ const requestRefreshToken = async (req, res) => {
 
 ///Logout user
 const logout = async (req, res) => {
-  res.clearCookie("refresh");
+  res.clearCookie("refreshtoken");
   arrayRefreshToken = arrayRefreshToken.filter(
-    (token) => token !== req.cookies.refresh
+    (token) => token !== req.cookies.refreshtoken
   );
-  res.status(200).json("Logged out!!!");
+  res.status(200).json("Log out successfully");
 };
 
 module.exports = { register, login, requestRefreshToken, logout };
