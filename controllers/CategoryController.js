@@ -29,7 +29,7 @@ const getAllCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
   try {
-    const category = await Category.findByIdAndDelete(req.params.id);
+    const category = await Category.findById(req.params.id);
     res.status(200).json("Delete Successfully");
   } catch (error) {
     res.status(500).json(error);
@@ -40,10 +40,9 @@ const updateCategory = async (req, res) => {
     const category = await Category.findOneAndUpdate(
       { _id: req.params.id },
       {
-        $set: {
-          description: req.body.description,
-        },
-      }
+        description: req?.body?.description,
+      },
+      { new: true }
     );
     res.status(200).json(category);
   } catch (error) {
