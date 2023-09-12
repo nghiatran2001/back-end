@@ -1,17 +1,16 @@
 const Category = require("../models/CategoryModel");
 const slugify = require("slugify");
+
 const addCategory = async (req, res) => {
   try {
-    const findCategory = await Category.findOne({ title: req.body.title });
+    const findCategory = await Category.findOne({
+      title: req.body.title,
+    });
     if (findCategory) {
-      return res.status(404).json("Title already axsist");
+      return res.status(404).json("Category already axsist");
     } else {
       req.body.slug = slugify(req.body.title);
-      const newCategory = await new Category({
-        title: req.body.title,
-        slug: req.body.slug,
-        description: req.body.description,
-      });
+      const newCategory = await Category.create(req.body);
       const category = await newCategory.save();
       res.status(200).json(category);
     }
@@ -41,7 +40,7 @@ const getCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
   try {
-    const category = await Category.findById(req.params.id);
+    const category = await Category.findByIdAndDelete(req.params.id);
     res.status(200).json("Delete Successfully");
   } catch (error) {
     res.status(500).json(error);
@@ -61,6 +60,7 @@ const updateCategory = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
 module.exports = {
   getAllCategory,
   deleteCategory,
