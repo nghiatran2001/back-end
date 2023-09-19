@@ -4,12 +4,12 @@ const slugify = require("slugify");
 const addProduct = async (req, res) => {
   try {
     const findProduct = await Product.findOne({
-      name: req.body.name,
+      nameProduct: req.body.nameProduct,
     });
     if (findProduct) {
       return res.status(404).json("Product already axsist");
     } else {
-      req.body.slug = slugify(req.body.name);
+      req.body.slug = slugify(req.body.nameProduct);
       const newProduct = await Product.create(req.body);
       const product = await newProduct.save();
       res.status(200).json(product);
