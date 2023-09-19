@@ -4,12 +4,12 @@ const slugify = require("slugify");
 const addCategory = async (req, res) => {
   try {
     const findCategory = await Category.findOne({
-      title: req.body.title,
+      name: req.body.name,
     });
     if (findCategory) {
       return res.status(404).json("Category already axsist");
     } else {
-      req.body.slug = slugify(req.body.title);
+      req.body.slug = slugify(req.body.name);
       const newCategory = await Category.create(req.body);
       const category = await newCategory.save();
       res.status(200).json(category);
