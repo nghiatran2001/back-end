@@ -48,9 +48,14 @@ const deleteProduct = async (req, res) => {
 };
 const updateProduct = async (req, res) => {
   try {
+    console.log(req.body);
     const product = await Product.findOneAndUpdate(
       { _id: req.params.id },
       {
+        nameProduct: req?.body?.nameProduct,
+        slug: slugify(req?.body?.nameProduct),
+        image: req?.body?.image,
+        nameCategory: req?.body?.nameCategory,
         quantity: req?.body?.quantity,
         originPrice: req?.body?.originPrice,
         sellPrice: req?.body?.sellPrice,

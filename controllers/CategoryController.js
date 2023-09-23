@@ -40,8 +40,8 @@ const getCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
   try {
-    const { nameCategory } = req.params;
-    const category = await Category.deleteOne({ nameCategory });
+    const { id } = req.params;
+    const category = await Category.deleteOne({ id });
     if (category.deletedCount) {
       res.status(200).json("Delete Successfully");
     }
