@@ -9,9 +9,9 @@ const addCart = async (req, res) => {
     if (findProduct) {
       return res.status(404).json("Product already axsist");
     } else {
-      const newProduct = await Cart.create(req.body);
-      const product = await newProduct.save();
-      res.status(200).json(product);
+      const newCart = await Cart.create(req.body);
+      const cart = await newCart.save();
+      res.status(200).json(cart);
     }
   } catch (error) {
     res.status(500).json(error);
