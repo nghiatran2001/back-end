@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const categorySchema = new mongoose.Schema(
   {
-    nameCategory: { type: String, required: true },
+    nameCategory: { type: String },
     slug: { type: String, lowercase: true },
     description: { type: String },
   },
