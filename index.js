@@ -12,6 +12,7 @@ const userRoute = require("./routes/user.js");
 const categoryRoute = require("./routes/category.js");
 const productRoute = require("./routes/product.js");
 const cartRoute = require("./routes/cart.js");
+const techRoute = require("./routes/tech.js");
 
 dbConnect();
 
@@ -30,6 +31,7 @@ app.use("/user", userRoute);
 app.use("/category", categoryRoute);
 app.use("/product", productRoute);
 app.use("/cart", cartRoute);
+app.use("/tech", techRoute);
 
 app.listen(PORT, () => {
   console.log("Server is running in port: ", +PORT);
