@@ -9,7 +9,7 @@ const productSchema = new mongoose.Schema(
     sellPrice: { type: Number },
     nameCategory: { type: String },
     description: { type: String },
-    disable: { type: Boolean, default: false },
+    disable: { type: String, default: "Hoạt động" },
     image: { type: String },
   },
   { timestamps: true }

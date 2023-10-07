@@ -34,7 +34,6 @@ const updateUser = async (req, res) => {
     const user = await User.findOneAndUpdate(
       _id,
       {
-        email: req?.body?.email,
         name: req?.body?.name,
         phone: req?.body?.phone,
       },
