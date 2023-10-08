@@ -40,11 +40,8 @@ const getCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
   try {
-    const { id } = req.params;
-    const category = await Category.deleteOne({ id });
-    if (category.deletedCount) {
-      res.status(200).json("Delete Successfully");
-    }
+    const category = await Category.findByIdAndDelete(req.params.id);
+    res.status(200).json("Delete Successfully");
   } catch (error) {
     res.status(500).json(error);
   }
@@ -54,6 +51,7 @@ const updateCategory = async (req, res) => {
     const category = await Category.findOneAndUpdate(
       { _id: req.params.id },
       {
+        nameCategory: req?.body?.nameCategory,
         description: req?.body?.description,
       },
       { new: true }

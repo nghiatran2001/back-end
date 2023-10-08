@@ -29,10 +29,9 @@ const deleteUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const { _id } = req.params.id;
   try {
     const user = await User.findOneAndUpdate(
-      _id,
+      { _id: req.params.id },
       {
         name: req?.body?.name,
         phone: req?.body?.phone,
@@ -44,4 +43,46 @@ const updateUser = async (req, res) => {
     res.status(500).json(error);
   }
 };
-module.exports = { getAllUser, getAUser, deleteUser, updateUser };
+
+const blockUser = async (req, res) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $set: {
+          disable: true,
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+const openUser = async (req, res) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $set: {
+          disable: false,
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+module.exports = {
+  blockUser,
+  openUser,
+  getAllUser,
+  getAUser,
+  deleteUser,
+  updateUser,
+};

@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String },
     phone: { type: String },
     role: { type: Boolean, default: false },
+    disable: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
