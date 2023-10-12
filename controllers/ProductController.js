@@ -30,10 +30,8 @@ const getAllProduct = async (req, res) => {
 
 const getProduct = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
   try {
     const getAProduct = await Product.findById(id);
-    console.log(getAProduct);
     res.status(200).json(getAProduct);
   } catch (error) {
     res.status(500).json(error);

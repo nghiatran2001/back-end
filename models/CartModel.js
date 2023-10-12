@@ -4,6 +4,7 @@ const cartSchema = new mongoose.Schema(
   {
     idProduct: { type: String },
     email: { type: String },
+    quantity: { type: Number },
   },
   { timestamps: true }
 );
