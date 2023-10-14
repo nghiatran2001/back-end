@@ -5,6 +5,7 @@ const addCart = async (req, res) => {
   try {
     const findProduct = await Cart.findOne({
       idProduct: req.body.idProduct,
+      email: req.body.email,
     });
     if (findProduct) {
       return res.status(404).json("Product already axsist in Cart");
