@@ -54,6 +54,7 @@ const updateProduct = async (req, res) => {
         nameProduct: req?.body?.nameProduct,
         slug: slugify(req?.body?.nameProduct),
         nameCategory: req?.body?.nameCategory,
+        nameBrand: req?.body?.nameBrand,
         quantity: req?.body?.quantity,
         originPrice: req?.body?.originPrice,
         sellPrice: req?.body?.sellPrice,

@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 5000;
 const authRoute = require("./routes/auth.js");
 const userRoute = require("./routes/user.js");
 const categoryRoute = require("./routes/category.js");
+const brandRoute = require("./routes/brand.js");
 const productRoute = require("./routes/product.js");
 const cartRoute = require("./routes/cart.js");
 const techRoute = require("./routes/tech.js");
@@ -29,6 +30,7 @@ app.use(
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
 app.use("/category", categoryRoute);
+app.use("/brand", brandRoute);
 app.use("/product", productRoute);
 app.use("/cart", cartRoute);
 app.use("/tech", techRoute);

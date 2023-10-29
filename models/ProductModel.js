@@ -8,6 +8,7 @@ const productSchema = new mongoose.Schema(
     originPrice: { type: Number },
     sellPrice: { type: Number },
     nameCategory: { type: String },
+    nameBrand: { type: String },
     description: { type: String },
     disable: { type: String, default: "Hoạt động" },
     image: { type: String },
