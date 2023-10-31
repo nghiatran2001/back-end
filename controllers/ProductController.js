@@ -1,5 +1,6 @@
 const Product = require("../models/ProductModel");
 const slugify = require("slugify");
+const page_size = 4;
 
 const addProduct = async (req, res) => {
   try {
@@ -20,11 +21,26 @@ const addProduct = async (req, res) => {
 };
 
 const getAllProduct = async (req, res) => {
-  try {
-    const product = await Product.find();
-    res.status(200).json(product);
-  } catch (error) {
-    res.status(500).json(error);
+  var page = req.query.page;
+  if (page) {
+    try {
+      page = parseInt(page);
+      if (page < 1) {
+        page = 1;
+      }
+      var nextPage = (page - 1) * page_size;
+      const product = await Product.find().skip(nextPage).limit(page_size);
+      res.status(200).json(product);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  } else {
+    try {
+      const product = await Product.find();
+      res.status(200).json(product);
+    } catch (error) {
+      res.status(500).json(error);
+    }
   }
 };
 
