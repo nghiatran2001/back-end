@@ -38,7 +38,7 @@ const getEmail = async (req, res) => {
     const idProduct = carts.map((e) => e.idProduct);
     const prouducts = await Product.find(
       { _id: idProduct },
-      { nameProduct: 1, image: 1, sellPrice: 1 }
+      { nameProduct: 1, image: 1, sellPrice: 1, quantity: 1 }
     );
     const finalData = carts.map((cart) => {
       prouducts.some((product) => {
@@ -46,6 +46,7 @@ const getEmail = async (req, res) => {
           cart._doc.nameProduct = product.nameProduct;
           cart._doc.image = product.image;
           cart._doc.sellPrice = product.sellPrice;
+          cart._doc.amount = product.quantity;
           return true;
         }
         return false;
@@ -57,5 +58,12 @@ const getEmail = async (req, res) => {
     res.status(500).send("Internal server error");
   }
 };
-
-module.exports = { addCart, getAllCart, getEmail };
+const deleteProduct = async (req, res) => {
+  try {
+    const product = await Cart.findByIdAndDelete(req.params.id);
+    res.status(200).json("Delete Successfully");
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+module.exports = { addCart, getAllCart, getEmail, deleteProduct };

@@ -14,11 +14,22 @@ const brandRoute = require("./routes/brand.js");
 const productRoute = require("./routes/product.js");
 const cartRoute = require("./routes/cart.js");
 const techRoute = require("./routes/tech.js");
+const orderRoute = require("./routes/order.js");
+const paymentRoute = require("./routes/payment.js");
 
 dbConnect();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ limit: "35mb" }));
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+    limit: "35mb",
+    parameterLimit: 50000,
+  })
+);
+
 app.use(cookieParser());
 app.use(
   cors({
@@ -34,6 +45,8 @@ app.use("/brand", brandRoute);
 app.use("/product", productRoute);
 app.use("/cart", cartRoute);
 app.use("/tech", techRoute);
+app.use("/order", orderRoute);
+app.use("/payment", paymentRoute);
 
 app.listen(PORT, () => {
   console.log("Server is running in port: ", +PORT);
