@@ -12,6 +12,7 @@ const productSchema = new mongoose.Schema(
     description: { type: String },
     disable: { type: String, default: "Hoạt động" },
     image: { type: String },
+    dateAdd: { type: Date },
   },
   { timestamps: true }
 );

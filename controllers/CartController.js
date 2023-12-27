@@ -6,6 +6,7 @@ const addCart = async (req, res) => {
     const findProduct = await Cart.findOne({
       idProduct: req.body.idProduct,
       email: req.body.email,
+      disable: true,
     });
     if (findProduct) {
       return res.status(404).json("Product already axsist in Cart");
@@ -33,7 +34,7 @@ const getEmail = async (req, res) => {
     const { email } = req.params;
     const carts = await Cart.find(
       { email: email },
-      { idProduct: 1, email: 1, quantity: 1 }
+      { idProduct: 1, email: 1, quantity: 1, disable: 1 }
     );
     const idProduct = carts.map((e) => e.idProduct);
     const prouducts = await Product.find(
@@ -66,4 +67,20 @@ const deleteProduct = async (req, res) => {
     res.status(500).json(error);
   }
 };
-module.exports = { addCart, getAllCart, getEmail, deleteProduct };
+
+const update = async (req, res) => {
+  try {
+    console.log(req.body.cart._id);
+    const cart = await Cart.findOneAndUpdate(
+      { _id: req.body.cart._id },
+      {
+        disable: true,
+      },
+      { new: true }
+    );
+    res.status(200).json(cart);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+module.exports = { addCart, getAllCart, getEmail, deleteProduct, update };
