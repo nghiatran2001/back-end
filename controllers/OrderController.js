@@ -25,7 +25,6 @@ const getEmail = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    console.log(req.body.order._id);
     const product = await Order.findOneAndUpdate(
       { _id: req.body.order._id },
       {
