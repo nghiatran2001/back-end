@@ -8,6 +8,7 @@ const paymentSchema = new mongoose.Schema(
     name: { type: String },
     address: { type: String },
     content: { type: String },
+    total: { type: String },
     status: { type: String, default: "Đang xử lý" },
   },
   { timestamps: true }
