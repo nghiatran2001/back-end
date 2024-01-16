@@ -1,9 +1,11 @@
 const Payment = require("../models/PaymentModel");
+const sendEmail = require("../services/emailService.js");
 
 const addOrder = async (req, res) => {
   try {
     const orders = await Payment.create(req.body);
     const list = await orders.save();
+    await sendEmail(orders);
     res.status(200).json(list);
   } catch (error) {
     res.status(500).json(error);

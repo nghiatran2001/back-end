@@ -1,4 +1,5 @@
 const Product = require("../models/ProductModel");
+const Cart = require("../models/CartModel");
 const slugify = require("slugify");
 const page_size = 4;
 
@@ -56,8 +57,14 @@ const getProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
   try {
-    const product = await Product.findByIdAndDelete(req.params.id);
-    res.status(200).json("Delete Successfully");
+    const product = await Product.findById(req.params.id);
+    const carts = await Cart.find({ idProduct: product._id });
+    if (carts != "") {
+      res.status(211).json("Delete Fail");
+    } else {
+      const product1 = await Product.findByIdAndDelete(req.params.id);
+      res.status(200).json("Delete Successfully");
+    }
   } catch (error) {
     res.status(500).json(error);
   }

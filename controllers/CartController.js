@@ -82,13 +82,12 @@ const update = async (req, res) => {
     res.status(500).json(error);
   }
 };
-
-const updateAmount = async (req, res) => {
+const updateQuantity = async (req, res) => {
   try {
     const cart = await Cart.findOneAndUpdate(
       { _id: req.body.cart._id },
       {
-        quantity: req.body.quantity,
+        quantity: req?.body?.cart?.quantity + 1,
       },
       { new: true }
     );
@@ -97,11 +96,27 @@ const updateAmount = async (req, res) => {
     res.status(500).json(error);
   }
 };
+const updateQuantityTru = async (req, res) => {
+  try {
+    const cart = await Cart.findOneAndUpdate(
+      { _id: req.body.cart._id },
+      {
+        quantity: req?.body?.cart?.quantity - 1,
+      },
+      { new: true }
+    );
+    res.status(200).json(cart);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 module.exports = {
   addCart,
   getAllCart,
   getEmail,
   deleteProduct,
   update,
-  updateAmount,
+  updateQuantity,
+  updateQuantityTru,
 };

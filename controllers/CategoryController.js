@@ -1,4 +1,6 @@
 const Category = require("../models/CategoryModel");
+const Product = require("../models/ProductModel");
+
 const slugify = require("slugify");
 
 const addCategory = async (req, res) => {
@@ -40,8 +42,16 @@ const getCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
   try {
-    const category = await Category.findByIdAndDelete(req.params.id);
-    res.status(200).json("Delete Successfully");
+    const categorys = await Category.findById(req.params.id);
+    const products = await Product.find({
+      nameCategory: categorys.nameCategory,
+    });
+    if (products != "") {
+      res.status(211).json("Delete Fail");
+    } else {
+      const category = await Category.findByIdAndDelete(req.params.id);
+      res.status(200).json("Delete Successfully");
+    }
   } catch (error) {
     res.status(500).json(error);
   }

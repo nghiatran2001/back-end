@@ -6,7 +6,8 @@ const {
   getEmail,
   deleteProduct,
   update,
-  updateAmount,
+  updateQuantity,
+  updateQuantityTru,
 } = require("../controllers/CartController");
 
 const router = express.Router();
@@ -16,6 +17,7 @@ router.get("/getall", getAllCart);
 router.get("/:email", getEmail);
 router.delete("/:id", deleteProduct);
 router.put("/:id", update);
-router.put("/:id", updateAmount);
+router.put("/quantity/:id", updateQuantity);
+router.put("/quantity1/:id", updateQuantityTru);
 
 module.exports = router;
