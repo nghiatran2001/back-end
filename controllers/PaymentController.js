@@ -46,9 +46,25 @@ const updateOrder = async (req, res) => {
   }
 };
 
+const cancelOrder = async (req, res) => {
+  try {
+    const order = await Payment.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        status: "Đã huỷ",
+      },
+      { new: true }
+    );
+    res.status(200).json(order);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 module.exports = {
   addOrder,
   getAll,
   getId,
   updateOrder,
+  cancelOrder,
 };

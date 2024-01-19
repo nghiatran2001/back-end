@@ -84,10 +84,22 @@ const update = async (req, res) => {
 };
 const updateQuantity = async (req, res) => {
   try {
+    const carts = await Cart.find(
+      { _id: req.body.cart._id },
+      { idProduct: 1, email: 1, quantity: 1, disable: 1 }
+    );
+    const idProduct = carts.map((e) => e.idProduct);
+    const products = await Product.findById(idProduct);
+
     const cart = await Cart.findOneAndUpdate(
       { _id: req.body.cart._id },
       {
-        quantity: req?.body?.cart?.quantity + 1,
+        quantity:
+          req?.body?.cart?.quantity >= products.quantity
+            ? products.quantity
+            : req?.body?.cart?.quantity >= 10
+            ? 10
+            : req?.body?.cart?.quantity + 1,
       },
       { new: true }
     );
@@ -101,7 +113,8 @@ const updateQuantityTru = async (req, res) => {
     const cart = await Cart.findOneAndUpdate(
       { _id: req.body.cart._id },
       {
-        quantity: req?.body?.cart?.quantity - 1,
+        quantity:
+          req?.body?.cart?.quantity <= 1 ? 1 : req?.body?.cart?.quantity - 1,
       },
       { new: true }
     );
@@ -111,6 +124,80 @@ const updateQuantityTru = async (req, res) => {
   }
 };
 
+const updateAmount = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const carts = await Cart.find(
+      { _id: id },
+      { idProduct: 1, email: 1, quantity: 1, disable: 1 }
+    );
+    const idProduct = carts.map((e) => e.idProduct);
+    const prouducts = await Product.find(
+      { _id: idProduct },
+      { nameProduct: 1, sellPrice: 1, quantity: 1 }
+    );
+    const finalData = carts.map((cart) => {
+      prouducts.some((product) => {
+        if (product._id.toString() === cart.idProduct) {
+          cart._doc.nameProduct = product.nameProduct;
+          cart._doc.sellPrice = product.sellPrice;
+          cart._doc.amount = product.quantity;
+          return true;
+        }
+        return false;
+      });
+      return cart;
+    });
+    finalData.map(async (e) => {
+      const test = await Product.findOneAndUpdate(
+        { _id: e._doc.idProduct },
+        {
+          quantity: e._doc.amount - e._doc.quantity,
+        },
+        { new: true }
+      );
+    });
+    res.send(finalData);
+  } catch (error) {
+    res.status(500).send("Internal server error");
+  }
+};
+// const updateAmount = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const carts = await Cart.find(
+//       { idProduct: id },
+//       { idProduct: 1, email: 1, quantity: 1, disable: 1 }
+//     );
+
+//     const products = await Product.find(
+//       { _id: id },
+//       { nameProduct: 1, sellPrice: 1, quantity: 1 }
+//     );
+
+//     const finalData = carts.map((cart) => {
+//       products.some((product) => {
+//         if (product._id.toString() === cart.idProduct) {
+//           let a = product.quantity - cart.quantity;
+//           cart._doc.nameProduct = product.nameProduct;
+
+//           cart._doc.sellPrice = product.sellPrice;
+//           cart._doc.amount = a;
+
+//           return true;
+//         }
+//         return false;
+//       });
+//       return cart;
+//     });
+
+//     console.log(finalData);
+//     res.send(finalData);
+//   } catch (error) {
+//     res.status(500).send("Internal server error");
+//   }
+// };
 module.exports = {
   addCart,
   getAllCart,
@@ -119,4 +206,5 @@ module.exports = {
   update,
   updateQuantity,
   updateQuantityTru,
+  updateAmount,
 };
