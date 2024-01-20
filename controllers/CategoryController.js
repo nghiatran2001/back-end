@@ -58,15 +58,22 @@ const deleteCategory = async (req, res) => {
 };
 const updateCategory = async (req, res) => {
   try {
-    const category = await Category.findOneAndUpdate(
-      { _id: req.params.id },
-      {
-        nameCategory: req?.body?.nameCategory,
-        description: req?.body?.description,
-      },
-      { new: true }
-    );
-    res.status(200).json(category);
+    const findCategory = await Category.findOne({
+      nameCategory: req.body.nameCategory,
+    });
+    if (findCategory) {
+      return res.status(404).json("Category already axsist");
+    } else {
+      const category = await Category.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          nameCategory: req?.body?.nameCategory,
+          description: req?.body?.description,
+        },
+        { new: true }
+      );
+      res.status(200).json(category);
+    }
   } catch (error) {
     res.status(500).json(error);
   }

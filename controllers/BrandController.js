@@ -48,15 +48,22 @@ const deleteBrand = async (req, res) => {
 };
 const updateBrand = async (req, res) => {
   try {
-    const brand = await Brand.findOneAndUpdate(
-      { _id: req.params.id },
-      {
-        nameBrand: req?.body?.nameBrand,
-        description: req?.body?.description,
-      },
-      { new: true }
-    );
-    res.status(200).json(brand);
+    const findBrand = await Brand.findOne({
+      nameBrand: req.body.nameBrand,
+    });
+    if (findBrand) {
+      return res.status(404).json("Brand already axsist");
+    } else {
+      const brand = await Brand.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          nameBrand: req?.body?.nameBrand,
+          description: req?.body?.description,
+        },
+        { new: true }
+      );
+      res.status(200).json(brand);
+    }
   } catch (error) {
     res.status(500).json(error);
   }

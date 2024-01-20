@@ -71,23 +71,30 @@ const deleteProduct = async (req, res) => {
 };
 const updateProduct = async (req, res) => {
   try {
-    const product = await Product.findOneAndUpdate(
-      { _id: req.params.id },
-      {
-        nameProduct: req?.body?.nameProduct,
-        slug: slugify(req?.body?.nameProduct),
-        nameCategory: req?.body?.nameCategory,
-        nameBrand: req?.body?.nameBrand,
-        quantity: req?.body?.quantity,
-        originPrice: req?.body?.originPrice,
-        sellPrice: req?.body?.sellPrice,
-        description: req?.body?.description,
-        disable: req?.body?.disable,
-        image: req?.body?.image,
-      },
-      { new: true }
-    );
-    res.status(200).json(product);
+    const findProduct = await Product.findOne({
+      nameProduct: req.body.nameProduct,
+    });
+    if (findProduct) {
+      return res.status(404).json("Product already axsist");
+    } else {
+      const product = await Product.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          nameProduct: req?.body?.nameProduct,
+          slug: slugify(req?.body?.nameProduct),
+          nameCategory: req?.body?.nameCategory,
+          nameBrand: req?.body?.nameBrand,
+          quantity: req?.body?.quantity,
+          originPrice: req?.body?.originPrice,
+          sellPrice: req?.body?.sellPrice,
+          description: req?.body?.description,
+          disable: req?.body?.disable,
+          image: req?.body?.image,
+        },
+        { new: true }
+      );
+      res.status(200).json(product);
+    }
   } catch (error) {
     res.status(500).json(error);
   }
