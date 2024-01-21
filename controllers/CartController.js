@@ -162,42 +162,47 @@ const updateAmount = async (req, res) => {
     res.status(500).send("Internal server error");
   }
 };
-// const updateAmount = async (req, res) => {
-//   try {
-//     const { id } = req.params;
 
-//     const carts = await Cart.find(
-//       { idProduct: id },
-//       { idProduct: 1, email: 1, quantity: 1, disable: 1 }
-//     );
+const updateKho = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const carts = await Cart.find(
+      { _id: id },
+      { idProduct: 1, email: 1, quantity: 1, disable: 1 }
+    );
+    const idProduct = carts.map((e) => e.idProduct);
+    const prouducts = await Product.find(
+      { _id: idProduct },
+      { nameProduct: 1, sellPrice: 1, quantity: 1 }
+    );
+    const finalData = carts.map((cart) => {
+      prouducts.some((product) => {
+        if (product._id.toString() === cart.idProduct) {
+          cart._doc.nameProduct = product.nameProduct;
+          cart._doc.sellPrice = product.sellPrice;
+          cart._doc.amount = product.quantity;
+          return true;
+        }
+        return false;
+      });
+      return cart;
+    });
 
-//     const products = await Product.find(
-//       { _id: id },
-//       { nameProduct: 1, sellPrice: 1, quantity: 1 }
-//     );
+    finalData.map(async (e) => {
+      const test = await Product.findOneAndUpdate(
+        { _id: e._doc.idProduct },
+        {
+          quantity: e._doc.amount + e._doc.quantity,
+        },
+        { new: true }
+      );
+    });
+    res.send(finalData);
+  } catch (error) {
+    res.status(500).send("Internal server error");
+  }
+};
 
-//     const finalData = carts.map((cart) => {
-//       products.some((product) => {
-//         if (product._id.toString() === cart.idProduct) {
-//           let a = product.quantity - cart.quantity;
-//           cart._doc.nameProduct = product.nameProduct;
-
-//           cart._doc.sellPrice = product.sellPrice;
-//           cart._doc.amount = a;
-
-//           return true;
-//         }
-//         return false;
-//       });
-//       return cart;
-//     });
-
-//     console.log(finalData);
-//     res.send(finalData);
-//   } catch (error) {
-//     res.status(500).send("Internal server error");
-//   }
-// };
 module.exports = {
   addCart,
   getAllCart,
@@ -207,4 +212,5 @@ module.exports = {
   updateQuantity,
   updateQuantityTru,
   updateAmount,
+  updateKho,
 };

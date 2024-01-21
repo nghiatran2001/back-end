@@ -9,6 +9,7 @@ const {
   updateQuantity,
   updateQuantityTru,
   updateAmount,
+  updateKho,
 } = require("../controllers/CartController");
 
 const router = express.Router();
@@ -21,5 +22,6 @@ router.put("/:id", update);
 router.put("/quantity/:id", updateQuantity);
 router.put("/quantity1/:id", updateQuantityTru);
 router.put("/update/:id", updateAmount);
+router.put("/updatekho/:id", updateKho);
 
 module.exports = router;
